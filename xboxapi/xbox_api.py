@@ -67,7 +67,7 @@ class XboxApi:
 
     def get_user_friends(self, xuid):
         """Return friends by XUID"""
-        res = self.request("https://xboxapi.com/v2/{}/activity/recent".format(xuid))
+        res = self.request("https://xboxapi.com/v2/{}/friends".format(xuid))
         return res.json()
 
     def get_user_followers(self, xuid):
