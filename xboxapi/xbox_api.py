@@ -97,7 +97,7 @@ class XboxApi:
         for xuid in xuids:
             payload["to"].append(xuid)
 
-        res = self.send_post("https://xboxapi.com/v2/messages", json.dumps(payload))
+        res = self.send_post("https://xboxapi.com/v2/messages", payload)
         return res.json()
 
     def send_activity_feed(self, message):
@@ -106,7 +106,7 @@ class XboxApi:
             "message": message
         }
 
-        res = self.send_post("https://xboxapi.com/v2/activity-feed", json.dumps(payload))
+        res = self.send_post("https://xboxapi.com/v2/activity-feed", payload)
         return res.json()
 
     def request(self, url):
@@ -122,5 +122,5 @@ class XboxApi:
             "Content-Type": "application/json"
         }
 
-        res = requests.post(url, headers=headers, data=data)
+        res = requests.post(url, headers=headers, data=json.dumps(data))
         return res
