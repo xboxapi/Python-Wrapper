@@ -89,11 +89,6 @@ class XboxApi:
 
     def send_message(self, message, xuids=[]):
         """Send a message to a set of user(s)"""
-        headers = {
-            "X-AUTH": self.api_key,
-            "Content-Type": "application/json"
-        }
-
         payload = {
             "message": message,
             "to": []
@@ -102,11 +97,30 @@ class XboxApi:
         for xuid in xuids:
             payload["to"].append(xuid)
 
-        res = requests.post("https://xboxapi.com/v2/messages", headers=headers, data=json.dumps(payload))
-        res.json()
+        res = self.send_post("https://xboxapi.com/v2/messages", payload)
+        return res.json()
+
+    def send_activity_feed(self, message):
+        """Send a post to a activity feed"""
+        payload = {
+            "message": message
+        }
+
+        res = self.send_post("https://xboxapi.com/v2/activity-feed", payload)
+        return res.json()
 
     def request(self, url):
         """Wrapper on the requests.get"""
         headers = {"X-AUTH": self.api_key}
         res = requests.get(url, headers=headers)
+        return res
+
+    def send_post(self, url, data):
+        """Wrapper on the requests.post"""
+        headers = {
+            "X-AUTH": self.api_key,
+            "Content-Type": "application/json"
+        }
+
+        res = requests.post(url, headers=headers, data=json.dumps(data))
         return res
