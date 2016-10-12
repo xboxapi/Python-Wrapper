@@ -2,6 +2,7 @@
 import requests
 import json
 
+
 class XboxApi:
     # XboxApi key
     api_key = ""
