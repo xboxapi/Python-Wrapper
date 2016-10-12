@@ -2,7 +2,6 @@
 import requests
 import json
 
-
 class XboxApi:
     # XboxApi key
     api_key = ""
@@ -18,7 +17,7 @@ class XboxApi:
 
     def get_xuid(self):
         """Return your xuid"""
-        res = self.request("https://xboxapi.com/v2/accountXuid")
+        res = self.request("https://xboxapi.com/v2/accountxuid")
         return res.json()
 
     def get_messages(self):

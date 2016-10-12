@@ -2,42 +2,28 @@ import codecs
 import os
 import re
 
+import xboxapi
+
 from setuptools import setup
 
-here = os.path.abspath(os.path.dirname(__file__))
+bin = os.path.abspath(os.path.dirname(__file__))
 
-
-def read(*parts):
-    # intentionally *not* adding an encoding option to open
-    return codecs.open(os.path.join(here, *parts), 'r').read()
-
-
-def find_version(*file_paths):
-    version_file = read(*file_paths)
-    version_match = re.search(r"^__version__ = ['\"]([^'\"]*)['\"]",
-                              version_file, re.M)
-    if version_match:
-        return version_match.group(1)
-    raise RuntimeError("Unable to find version string.")
-
+def read(file):
+    return codecs.open(os.path.join(bin, file), 'r').read()
 
 long_description = read('README.md')
 
-
 setup(
-    # i.e. `pip install xboxapi`
     name='xboxapi',
-    version=find_version('xboxapi', '__init__.py'),
+    version=xboxapi.__version__,
     url='https://github.com/xboxapi/Python-Wrapper',
     license='MIT License',
-    author='XBoxApi.com',
-    install_requires=['requests',
-                      ],
-    #author_email='',
+    author='xboxapi.com',
+    install_requires=['requests'],
     description='XBOX One API',
     long_description=long_description,
     packages=['xboxapi'],
-    package_data={'': ['REDAME.md', 'LICENSE']},
+    package_data={'': ['README.md', 'LICENSE']},
     include_package_data=True,
     platforms='any',
     classifiers=[
