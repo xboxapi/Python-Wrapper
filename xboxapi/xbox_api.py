@@ -85,7 +85,120 @@ class XboxApi:
         res = self.request("https://xboxapi.com/v2/{}/game-clips".format(xuid))
         return res.json()
 
-    # continue with #16
+    def get_user_saved_gameclips(self, xuid):
+        """Return saved game clips by XUID"""
+        res = self.request("https://xboxapi.com/v2/{}/game-clips/saved".format(xuid))
+        return res.json()
+
+    def get_user_saved_gameclips(self, xuid, title_id):
+        """Return saved game clips for game by XUID and TitleId"""
+        res = self.request("https://xboxapi.com/v2/{}/game-clips/{}".format(xuid, title_id))
+        return res.json()
+
+    def get_saved_gameclips(self, title_id):
+        """Return saved game clips by TitleId"""
+        res = self.request("https://xboxapi.com/v2/game-clips/{}".format(title_id))
+        return res.json()
+
+    def get_user_screenshots(self, xuid):
+        """Return screenshots by XUID"""
+        res = self.request("https://xboxapi.com/v2/{}/screenshots".format(xuid))
+        return res.json()
+
+    def get_user_saved_screenshots(self, xuid, title_id):
+        """Return saved screenshots for game by XUID and TitleId"""
+        res = self.request("https://xboxapi.com/v2/{}/screenshots/{}".format(xuid, title_id))
+        return res.json()
+
+    def get_saved_screenshots(self, title_id):
+        """Return saved screenshots by TitleId"""
+        res = self.request("https://xboxapi.com/v2/screenshots/{}".format(title_id))
+        return res.json()
+
+    def get_user_game_stats(self, xuid, title_id):
+        """Return user game stats by XUID and TitleId"""
+        res = self.request("https://xboxapi.com/v2/{}/game-stats/{}".format(xuid, title_id))
+        return res.json()
+
+    def get_user_xbox360games(self, xuid):
+        """Return user Xbox 360 games"""
+        res = self.request("https://xboxapi.com/v2/{}/xbox360games".format(xuid))
+        return res.json()
+
+    def get_user_xboxonegames(self, xuid):
+        """Return user Xbox One games"""
+        res = self.request("https://xboxapi.com/v2/{}/xboxonegames".format(xuid))
+        return res.json()
+
+    def get_user_achievements(self, xuid, title_id):
+        """Return user achievements per game"""
+        res = self.request("https://xboxapi.com//v2/{}/achievements/{}".format(xuid, title_id))
+        return res.json()
+
+    def get_game_info_hex(self, game_id):
+        """Return game information (game_id in hex)"""
+        res = self.request("https://xboxapi.com/v2/game-details-hex/{}".format(game_id))
+        return res.json()
+
+    def get_game_info(self, product_id):
+        """Return game information from product_id"""
+        res = self.request("https://xboxapi.com/v2/game-details/{}".format(product_id))
+        return res.json()
+
+    def get_game_addons(self, product_id):
+        """Return game addon information from product_id"""
+        res = self.request("https://xboxapi.com/v2/game-details/{}/addons".format(product_id))
+        return res.json()
+
+    def get_game_related(self, product_id):
+        """Return game related information from product_id"""
+        res = self.request("https://xboxapi.com/v2/game-details/{}/related".format(product_id))
+        return res.json()
+
+    def get_latest_xbox360games(self):
+        """Return latest released Xbox 360 games"""
+        res = self.request("https://xboxapi.com/v2/latest-xbox360-games")
+        return res.json()
+
+    def get_latest_xboxonegames(self):
+        """Return latest released Xbox one games"""
+        res = self.request("https://xboxapi.com/v2/latest-xboxone-games")
+        return res.json()
+
+    def get_latest_xboxoneapps(self):
+        """Return latest released Xbox one apps"""
+        res = self.request("https://xboxapi.com/v2/latest-xboxone-apps")
+        return res.json()
+
+    def get__xboxone_gold(self):
+        """List the free Games with Gold and Deals with Gold"""
+        res = self.request("https://xboxapi.com/v2/xboxone-gold-lounge")
+        return res.json()
+
+    def get_xbox360games(self):
+        """Return Xbox 360 games"""
+        res = self.request("https://xboxapi.com/v2/browse-marketplace/xbox360/1?sort=releaseDate")
+        return res.json()
+
+    def get_latest_xboxonegames(self):
+        """Return Xbox one games"""
+        res = self.request("https://xboxapi.com/v2/browse-marketplace/games/1?sort=releaseDate")
+        return res.json()
+
+    def get_latest_xboxoneapps(self):
+        """Return Xbox one apps"""
+        res = self.request("https://xboxapi.com/v2/browse-marketplace/apps/1?sort=releaseDate")
+        return res.json()
+
+    def get_user_activity_feed(self):
+        """Return user activity feed"""
+        res = self.request("https://xboxapi.com/v2/activity-feed")
+        return res.json()
+
+    def get_user_titlehub_achievements(self, xuid):
+        """Return user Title Hub Achievements"""
+        res = self.request("https://xboxapi.com/v2/{}/titlehub-achievement-list".format(xuid))
+        return res.json()
 
     def send_message(self, message, xuids=[]):
         """Send a message to a set of user(s)"""
