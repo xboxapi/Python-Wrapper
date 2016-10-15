@@ -33,7 +33,7 @@ print(profile_info)
 
 ## Requests list
 
-#### >`get_profile()` - user profile info
+#### `get_profile()` - user profile info
 #### `get_xuid()` - user personal xbox uid
 #### `get_messages()` - user account messages with full preview
 #### `get_conversations()` - user conversations with full preview of the last message sent/recieved
