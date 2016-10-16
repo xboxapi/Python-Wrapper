@@ -90,7 +90,7 @@ class XboxApi:
         res = self.request("https://xboxapi.com/v2/{}/game-clips/saved".format(xuid))
         return res.json()
 
-    def get_user_saved_gameclips(self, xuid, title_id):
+    def get_user_saved_gameclips_by_title(self, xuid, title_id):
         """Return saved game clips for game by XUID and TitleId"""
         res = self.request("https://xboxapi.com/v2/{}/game-clips/{}".format(xuid, title_id))
         return res.json()
@@ -170,7 +170,7 @@ class XboxApi:
         res = self.request("https://xboxapi.com/v2/latest-xboxone-apps")
         return res.json()
 
-    def get__xboxone_gold(self):
+    def get_xboxone_gold(self):
         """List the free Games with Gold and Deals with Gold"""
         res = self.request("https://xboxapi.com/v2/xboxone-gold-lounge")
         return res.json()
@@ -180,12 +180,12 @@ class XboxApi:
         res = self.request("https://xboxapi.com/v2/browse-marketplace/xbox360/1?sort=releaseDate")
         return res.json()
 
-    def get_latest_xboxonegames(self):
+    def get_xboxonegames(self):
         """Return Xbox one games"""
         res = self.request("https://xboxapi.com/v2/browse-marketplace/games/1?sort=releaseDate")
         return res.json()
 
-    def get_latest_xboxoneapps(self):
+    def get_xboxoneapps(self):
         """Return Xbox one apps"""
         res = self.request("https://xboxapi.com/v2/browse-marketplace/apps/1?sort=releaseDate")
         return res.json()
@@ -225,7 +225,7 @@ class XboxApi:
     def request(self, url):
         """Wrapper on the requests.get"""
         headers = {"X-AUTH": self.api_key}
-        res = requests.get(url, headers=headers)
+        res = requests.get(url, headers=headers, verify=False)  # Set `verify=False` to avoid SSLException
         return res
 
     def send_post(self, url, data):
@@ -235,5 +235,6 @@ class XboxApi:
             "Content-Type": "application/json"
         }
 
-        res = requests.post(url, headers=headers, data=json.dumps(data))
+        res = requests.post(url, headers=headers,
+                            data=json.dumps(data), verify=False)  # Set `verify=False` to avoid SSLException
         return res
