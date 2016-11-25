@@ -226,7 +226,7 @@ class XboxApi:
     def request(self, url):
         """Wrapper on the requests.get"""
         headers = {"X-AUTH": self.api_key}
-        res = requests.get(url, headers=headers, verify=False)  # Set `verify=False` to avoid SSLException
+        res = requests.get(url, headers=headers)
         return res
 
     def send_post(self, url, data):
@@ -237,5 +237,5 @@ class XboxApi:
         }
 
         res = requests.post(url, headers=headers,
-                            data=json.dumps(data), verify=False)  # Set `verify=False` to avoid SSLException
+                            data=json.dumps(data))
         return res
