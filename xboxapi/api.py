@@ -3,13 +3,19 @@
 import requests
 import json
 
+TIMEOUT = 2
+
 class XboxApi:
     # XboxApi key
     api_key = ""
 
-    def __init__(self, api_key):
+    def __init__(self, api_key, debug=False):
         """Only requires the XboxApi key"""
         self.api_key = api_key
+
+        if debug:
+            import logging
+            logging.basicConfig(level=logging.DEBUG)
 
     def get_profile(self):
         """Return information for current token profile"""
@@ -226,7 +232,7 @@ class XboxApi:
     def request(self, url):
         """Wrapper on the requests.get"""
         headers = {"X-AUTH": self.api_key}
-        res = requests.get(url, headers=headers)
+        res = requests.get(url, headers=headers, timeout=TIMEOUT)
         return res
 
     def send_post(self, url, data):
@@ -237,5 +243,5 @@ class XboxApi:
         }
 
         res = requests.post(url, headers=headers,
-                            data=json.dumps(data))
+                            data=json.dumps(data), timeout=TIMEOUT)
         return res
