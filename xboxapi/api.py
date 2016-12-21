@@ -1,6 +1,7 @@
 #-*- coding: utf-8 -*-
 
 import requests
+import types
 import json
 
 TIMEOUT = 2
@@ -209,6 +210,9 @@ class XboxApi:
 
     def send_message(self, message, xuids=[]):
         """Send a message to a set of user(s)"""
+        if not isinstance(xuids, types.ListType):
+            raise TypeError("xuids not of type \"List\"")
+
         payload = {
             "message": message,
             "to": []
