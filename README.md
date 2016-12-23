@@ -37,10 +37,10 @@ print(profile_info)
 #### `get_xuid()` - user personal xbox uid
 #### `get_messages()` - user account messages with full preview
 #### `get_conversations()` - user conversations with full preview of the last message sent/recieved
-#### `get_xuid_by_gametag(gametag)` - user XUID for a specified Gamertag
-#### `get_gametag_by_xuid(xuid)` - Gamertag for a specified XUID
+#### `get_xuid_by_gamertag(gamertag)` - user XUID for a specified Gamertag
+#### `get_gamertag_by_xuid(xuid)` - Gamertag for a specified XUID
 #### `get_user_profile(xuid)` - Profile for a specified XUID
-#### `get_user_gamecard(xuid)` - Gamercard information for a specified XUID
+#### `get_user_gamercard(xuid)` - Gamercard information for a specified XUID
 #### `get_user_presence(xuid)` - current presence information for a specified XUID
 #### `get_user_activity(xuid)` - current activity information for a specified XUID
 #### `get_user_activity_recent(xuid)` - recent activity information for a specified XUID
