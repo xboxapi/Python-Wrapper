@@ -1,5 +1,5 @@
 #-*- coding: utf-8 -*-
 
-from .api import XboxApi
+from .client import Client
 
-__version__ = '0.1.2'
+__version__ = '1.0.0'
