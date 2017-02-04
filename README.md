@@ -2,6 +2,8 @@
 
 This is a Python wrapper for the unofficial [Xbox API](https://xboxapi.com)
 
+[![Build Status](https://travis-ci.org/xboxapi/Python-Wrapper.svg?branch=master)](https://travis-ci.org/xboxapi/Python-Wrapper)
+
 # Installation #
 For now you will have to install manually, as I didn't upload the initial version to pypi (`pip`).
 
