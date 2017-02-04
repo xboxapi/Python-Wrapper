@@ -5,60 +5,79 @@ import types
 import json
 
 # Local libraries
-from .user import User
+from .gamer import Gamer
+
 import xboxapi
 
-REQUEST_TIMEOUT = 5 # seconds
-
 class Client(object):
-  api_key = None
-  endpoint = "https://xboxapi.com/v2/"
 
-  user = object
+  def __init__(self, api_key=None, debug=None, timeout=None, lang=None):
 
-  def __init__(self, api_key=None, prefetch=False, debug=True):
-    self.api_key = api_key
+    self.api_key =  api_key
+    self.timeout = timeout
+    self.endpoint = 'https://xboxapi.com/v2/'
+    self.timeout = timeout if timeout is not None else 3 # Seconds
+    self.lang = lang
+    self.last_method_call = None
+    self.continuation_token = None
+    self.debug = debug
+    self.logger = None
 
-    if debug:
+    if debug is not None:
       import logging
       logging.basicConfig(level=logging.DEBUG)
+      self.logger = logging.getLogger('xboxapi')
 
-    res = self._get(self.endpoint + 'profile').json()
+    if self.api_key is None:
+      raise ValueError('Api key is missing')
 
-    # Fetch user settings
-    self.user = User(res)
+  def gamer(self, gamertag=None):
+    ''' return a gamer object '''
+    if gamertag is None:
+      raise ValueError("No gamertag given!")
 
-  def send_message(self, message=None, xuids=[]):
-    ''' Send message to list of gamers by xuid '''
-    if message is None:
-      raise ValueError("You must send a message!")
+    return Gamer(gamertag, self)
 
-    payload = {
-      "message": message,
-      "to": []
-    }
+  def api_get(self, method):
+    if self.debug is not None:
+      self.logger.info('Sending (method) -> {}'.format(method))
 
-    for xuid in xuids:
-      payload["to"].append(xuid)
-
-    res = self._post(self.endpoint + "messages", payload)
-    return res.json()
-
-  def _get(self, url):
     ''' GET wrapper on requests library '''
     headers = {'X-Auth' : self.api_key,
-               'user-agent' : 'Python/XboxApi ' + xboxapi.__version__}
-    return requests.get(url, headers=headers, timeout=REQUEST_TIMEOUT)
+               'User-Agent' : 'Python/XboxApi ' + xboxapi.__version__}
 
-  def _post(self, url, body):
+    if self.lang is not None:
+      headers['Accept-Language'] = self.lang
+
+    url = self.endpoint + method
+    # Check for continuation token and the method match the last call
+    if method == self.last_method_call and self.continuation_token is not None:
+      url = url + '?continuationToken=' + self.continuation_token
+
+    if self.debug is not None:
+      self.logger.info('Sending (request) -> {}'.format(url))
+      self.logger.info('Headers (request) -> {}'.format(headers))
+
+    res = requests.get(self.endpoint + method, headers=headers, timeout=self.timeout)
+
+    # Track method calls and peak for continuation token
+    self.last_method_call = method
+    self.continuation_token = None
+    if 'X-Continuation-Token' in res.headers:
+      self.continuation_token = res.headers['X-Continuation-Token']
+
+    return res
+
+  def api_post(self, method, body):
     ''' POST wrapper on requests library '''
     headers = {
         'X-AUTH': self.api_key,
         'Content-Type' : 'application/json'
     }
 
-    return requests.post(url, headers=headers, data=json.dumps(body),
-                         timeout=REQUEST_TIMEOUT)
+    res = requests.post(self.endpoint + method, headers=headers, data=json.dumps(body),
+                         timeout=self.timeout)
+    return res
 
   def calls_remaining(self):
     ''' Check on the limits from server '''
