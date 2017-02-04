@@ -30,24 +30,60 @@ class Gamer(object):
 
   def get(self, method=None, term=None):
     ''' Retrieve data from supported endpoints '''
+    url = self.parse_endpoints(method, term)
+    if url is not False:
+      return self.client.api_get(url).json()
+
+    url = self.parse_endpoints_secondary(method, term)
+    if url is not False:
+      return self.client.api_get(url).json()
+
+    return {}
+
+  def parse_endpoints(self, method=None, term=None):
+    ''' Constructs a valid endpoint url for api '''
+    if method is None:
+      return False
+
     for endpoint in self.endpoints:
       if endpoint != method:
         continue
       url = endpoint
       if term is not None:
         url = url + '/' + term
-      return self.client.api_get(endpoint).json()
+      return url
 
-    # Check secondary endpoints that require xuid
+    return False
+
+  def parse_endpoints_secondary(self, method=None, term=None):
+    ''' Parse secondary endpoints that require xuid in url '''
     for endpoint in self.endpoints_xuid:
       if endpoint != method:
         continue
       url = str(self.xuid) + '/' + endpoint
       if term is not None:
         url = url + '/' + term
-      return self.client.api_get(url).json()
+      return url
 
-    return {}
+    return False
+
+  def send_message(self, message=None, gamers=None):
+    ''' Send a message given a list of gamer xuids '''
+    payload = {}
+    if message is None:
+      raise ValueError('A message is required!')
+    if gamers is None or not hasattr(gamers, 'append'):
+      raise TypeError('List was not given!')
+    payload['to'] = gamers
+    payload['message'] = message
+    return self.client.api_post('messages', payload)
+
+  def post_activity(self, message=None):
+    ''' Post directly to your activity feed '''
+    if message is None:
+      raise ValueError('A message is required!')
+    payload['message'] = message
+    return self.client.api_post('acitivity-feed', payload)
 
   def fetch_xuid(self):
     ''' Fetch gamer xuid from gamertag '''

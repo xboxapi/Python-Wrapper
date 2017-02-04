@@ -1,7 +1,6 @@
 #-*- coding: utf-8 -*-
 
 import requests
-import types
 import json
 
 # Local libraries
