@@ -30,12 +30,12 @@ class Client(object):
     if self.api_key is None:
       raise ValueError('Api key is missing')
 
-  def gamer(self, gamertag=None):
+  def gamer(self, gamertag=None, xuid=None):
     ''' return a gamer object '''
     if gamertag is None:
       raise ValueError("No gamertag given!")
 
-    return Gamer(gamertag, self)
+    return Gamer(gamertag=gamertag, client=self, xuid=xuid)
 
   def api_get(self, method):
     if self.debug is not None:
