@@ -82,7 +82,6 @@ class Client(object):
   def calls_remaining(self):
     ''' Check on the limits from server '''
     server_headers = self.api_get('accountxuid').headers
-    print(server_headers)
     limit_headers = {}
     limit_headers['X-RateLimit-Reset'] = server_headers['X-RateLimit-Reset']
     limit_headers['X-RateLimit-Limit'] = server_headers['X-RateLimit-Limit']
