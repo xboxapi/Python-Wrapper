@@ -40,7 +40,7 @@ profile = gamer.get('profile')
 | Method | Value | Optional | Short Description |
 |---       |---    |---              |---       |
 | `gamer(gamertag=<string>)`        | string  | `xuid=<string>` | gamertag to lookup |
-| `call_remaining()` | n/a | n/a | Return headers about api rate limits |
+| `calls_remaining()` | n/a | n/a | Return headers about api rate limits |
 
 A note about the gamer method. If you already know the gamers xuid you can use that instead to avoid an additional api call when using only a gamertag.
 
