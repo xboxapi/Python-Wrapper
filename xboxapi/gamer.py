@@ -69,14 +69,14 @@ class Gamer(object):
 
     return False
 
-  def send_message(self, message=None, gamers=None):
+  def send_message(self, message=None, xuids=None):
     ''' Send a message given a list of gamer xuids '''
     payload = {}
     if message is None:
       raise ValueError('A message is required!')
-    if gamers is None or not hasattr(gamers, 'append'):
+    if xuids is None or not hasattr(xuids, 'append'):
       raise TypeError('List was not given!')
-    payload['to'] = gamers
+    payload['to'] = xuids
     payload['message'] = message
     return self.client.api_post('messages', payload)
 
