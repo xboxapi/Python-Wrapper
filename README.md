@@ -30,7 +30,6 @@ profile = gamer.get('profile')
 | Argument | Value | Short Description |
 |---       |---    |---                |
 | api_key        | string  | api token from [Xbox API](https://xboxapi.com)    |
-| debug          | boolean | print debug information to stdout                 |
 | timeout        | int     | how long until the request times out (seconds)    |
 | lang           | string  | country language code (e.g. for German (`de-DE`)) |
 
