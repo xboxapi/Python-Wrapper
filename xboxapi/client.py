@@ -1,16 +1,20 @@
 #-*- coding: utf-8 -*-
 
 import requests
+import logging
 import json
+import os
 
 # Local libraries
 from .gamer import Gamer
 
 import xboxapi
 
+logging.basicConfig()
+
 class Client(object):
 
-  def __init__(self, api_key=None, debug=None, timeout=None, lang=None):
+  def __init__(self, api_key=None, timeout=None, lang=None):
 
     self.api_key =  api_key
     self.timeout = timeout
@@ -19,13 +23,11 @@ class Client(object):
     self.lang = lang
     self.last_method_call = None
     self.continuation_token = None
-    self.debug = debug
-    self.logger = None
 
-    if debug is not None:
-      import logging
-      logging.basicConfig(level=logging.DEBUG)
-      self.logger = logging.getLogger('xboxapi')
+    # Debug logging can be triggered from environment variable XBOXAPI_DEBUG=1
+    self.logger = logging.getLogger('xboxapi')
+    log_level = logging.DEBUG if os.getenv('XBOXAPI_DEBUG') else logging.INFO
+    self.logger.setLevel(log_level)
 
     if self.api_key is None:
       raise ValueError('Api key is missing')
@@ -38,9 +40,6 @@ class Client(object):
     return Gamer(gamertag=gamertag, client=self, xuid=xuid)
 
   def api_get(self, method):
-    if self.debug is not None:
-      self.logger.info('Sending (method) -> {}'.format(method))
-
     ''' GET wrapper on requests library '''
     headers = {'X-Auth' : self.api_key,
                'User-Agent' : 'Python/XboxApi ' + xboxapi.__version__}
@@ -53,11 +52,11 @@ class Client(object):
     if method == self.last_method_call and self.continuation_token is not None:
       url = url + '?continuationToken=' + self.continuation_token
 
-    if self.debug is not None:
-      self.logger.info('Sending (request) -> {}'.format(url))
-      self.logger.info('Headers (request) -> {}'.format(headers))
+    self.logger.debug('{} {}'.format('GET', url))
+    self.logger.debug('Headers: {}'.format(headers))
 
     res = requests.get(self.endpoint + method, headers=headers, timeout=self.timeout)
+    self.logger.debug('Response: {}'.format(res.json()))
 
     # Track method calls and peak for continuation token
     self.last_method_call = method
@@ -74,8 +73,16 @@ class Client(object):
         'Content-Type' : 'application/json'
     }
 
+    url = '{}{}'.format(self.endpoint, method)
+
+    self.logger.debug('{} {}'.format('POST', url))
+    self.logger.debug('Headers: {}'.format(headers))
+    self.logger.debug('Body: {}'.format(body))
+
     res = requests.post(self.endpoint + method, headers=headers, data=json.dumps(body),
                          timeout=self.timeout)
+    self.logger.debug('Response: {}'.format(res.json()))
+
     return res
 
   def calls_remaining(self):
