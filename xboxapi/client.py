@@ -98,3 +98,20 @@ class Client(object):
         limit_headers['X-RateLimit-Reset'] = server_headers['X-RateLimit-Reset']
         limit_headers['X-RateLimit-Limit'] = server_headers['X-RateLimit-Limit']
         limit_headers['X-RateLimit-Remaining'] = server_headers['X-RateLimit-Remaining']
+        return limit_headers
+
+    def xboxapi_response_error(self, response):
+        """
+        Check for an errors returned from the XboxAPI. Errors from the XboxAPI
+        have the following format.
+
+        Example:
+        {
+            "success": false,
+            "error_code": 402,
+            "error_message": "Paid subscriber feature only"
+        }
+        """
+        if not response.ok:
+            self.logger.error('XboxAPI error: (%s) %s', response.status_code, response.reason)
+            return
