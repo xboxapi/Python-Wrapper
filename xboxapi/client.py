@@ -28,8 +28,7 @@ class Client(object):
         # Debug logging can be triggered from environment variable
         # XBOXAPI_DEBUG=1
         self.logger = logging.getLogger('xboxapi')
-        log_level = logging.DEBUG if os.getenv(
-            'XBOXAPI_DEBUG') else logging.INFO
+        log_level = logging.DEBUG if os.getenv('XBOXAPI_DEBUG') else logging.INFO
         self.logger.setLevel(log_level)
 
         if self.api_key is None:
@@ -55,12 +54,13 @@ class Client(object):
         if method == self.last_method_call and self.continuation_token is not None:
             url = url + '?continuationToken=' + self.continuation_token
 
-        self.logger.debug('{} {}'.format('GET', url))
-        self.logger.debug('Headers: {}'.format(headers))
+        self.logger.debug('%s %s', 'GET', url)
+        self.logger.debug('Headers: %s', headers)
 
         res = requests.get(self.endpoint + method,
                            headers=headers, timeout=self.timeout)
-        self.logger.debug('Response: {}'.format(res.json()))
+        self.xboxapi_response_error(res)
+        self.logger.debug('Response: %s', res.json())
 
         # Track method calls and peak for continuation token
         self.last_method_call = method
@@ -79,13 +79,15 @@ class Client(object):
 
         url = '{}{}'.format(self.endpoint, method)
 
-        self.logger.debug('{} {}'.format('POST', url))
-        self.logger.debug('Headers: {}'.format(headers))
-        self.logger.debug('Body: {}'.format(body))
+        self.logger.debug('%s %s', 'POST', url)
+        self.logger.debug('Headers: %s', headers)
+        self.logger.debug('Body: %s', body)
 
         res = requests.post(self.endpoint + method, headers=headers, data=json.dumps(body),
                             timeout=self.timeout)
-        self.logger.debug('Response: {}'.format(res.json()))
+        self.xboxapi_response_error(res)
+
+        self.logger.debug('Response: %s', res.json())
 
         return res
 
@@ -93,10 +95,6 @@ class Client(object):
         ''' Check on the limits from server '''
         server_headers = self.api_get('accountxuid').headers
         limit_headers = {}
-        limit_headers[
-            'X-RateLimit-Reset'] = server_headers['X-RateLimit-Reset']
-        limit_headers[
-            'X-RateLimit-Limit'] = server_headers['X-RateLimit-Limit']
-        limit_headers[
-            'X-RateLimit-Remaining'] = server_headers['X-RateLimit-Remaining']
-        return limit_headers
+        limit_headers['X-RateLimit-Reset'] = server_headers['X-RateLimit-Reset']
+        limit_headers['X-RateLimit-Limit'] = server_headers['X-RateLimit-Limit']
+        limit_headers['X-RateLimit-Remaining'] = server_headers['X-RateLimit-Remaining']
