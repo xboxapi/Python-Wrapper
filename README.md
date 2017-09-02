@@ -48,7 +48,7 @@ A note about the gamer method. If you already know the gamers xuid you can use t
 | Method | Value | Optional | Short Description |
 |---       |---    |---              |---       |
 | `get(method=<string>)`        | string  | `term=<string>` | API calls. |
-| `send_message(message=<string>, xuids=[])` | string, list | n/a | Send a message to the following xuids |
+| `send_message(message=<string>)` | string | n/a | Send a message to gamer |
 | `send_activity(message=<string>)` | string | n/a | Update your activity feed with a message |
 
 Pagination is supported in this client and all handled through `get` method. It works by detecting the response header for pagination, any subsequent calls to the same api endpoint will return paged data. If another api call is made to a different endpoint, the pagination token will be cleared and results will not be paged.
