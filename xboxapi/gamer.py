@@ -8,8 +8,7 @@ class Gamer(object):
         self.client = client
         self.gamertag = gamertag
         self.xuid = xuid if xuid is not None else self.fetch_xuid()
-        self.endpoints = ['profile',
-                          'messages',
+        self.endpoints = ['messages',
                           'conversations',
                           'recent-players',
                           'activity-feed',
@@ -18,6 +17,7 @@ class Gamer(object):
                           'latest-xboxone-apps',
                           'xboxone-gold-lounge']
         self.endpoints_xuid = ['achievements',
+                               'profile',
                                'presence',
                                'gamercard',
                                'activity',
@@ -33,6 +33,10 @@ class Gamer(object):
 
     def get(self, method=None, term=None):
         ''' Retrieve data from supported endpoints '''
+        # Hack to avoid calling api again for xuid retrieval
+        if method == 'xuid':
+            return self.xuid
+
         url = self.parse_endpoints(method, term)
         if url is not False:
             return self.client.api_get(url).json()
@@ -75,14 +79,20 @@ class Gamer(object):
         payload = {}
         if message is None:
             raise ValueError('A message is required!')
-        if xuids is None or not hasattr(xuids, 'append'):
+
+        if xuids is not None and not hasattr(xuids, 'append'):
             raise TypeError('List was not given!')
+
+        if xuids is None:
+            xuids = [self.xuid]
+
         payload['to'] = xuids
         payload['message'] = message
         return self.client.api_post('messages', payload)
 
     def post_activity(self, message=None):
         ''' Post directly to your activity feed '''
+        payload = {}
         if message is None:
             raise ValueError('A message is required!')
         payload['message'] = message
