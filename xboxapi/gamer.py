@@ -15,7 +15,9 @@ class Gamer(object):
                           'latest-xbox360-games',
                           'latest-xboxone-games',
                           'latest-xboxone-apps',
-                          'xboxone-gold-lounge']
+                          'xboxone-gold-lounge',
+                          'game-details',
+                          'game-details-hex']
         self.endpoints_xuid = ['achievements',
                                'profile',
                                'presence',
