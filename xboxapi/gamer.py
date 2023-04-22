@@ -8,30 +8,34 @@ class Gamer(object):
         self.client = client
         self.gamertag = gamertag
         self.xuid = xuid if xuid is not None else self.fetch_xuid()
-        self.endpoints = ['messages',
-                          'conversations',
-                          'recent-players',
-                          'activity-feed',
-                          'latest-xbox360-games',
-                          'latest-xboxone-games',
-                          'latest-xboxone-apps',
-                          'xboxone-gold-lounge',
-                          'game-details',
-                          'game-details-hex']
-        self.endpoints_xuid = ['achievements',
-                               'profile',
-                               'presence',
-                               'gamercard',
-                               'activity',
-                               'friends',
-                               'followers',
-                               'game-clips',
-                               'game-clips/saved',
-                               'game-stats',
-                               'screenshots',
-                               'xbox360games',
-                               'xboxonegames',
-                               'game-status']
+        self.endpoints = [
+            'messages',
+            'conversations',
+            'recent-players',
+            'activity-feed',
+            'latest-xbox360-games',
+            'latest-xboxone-games',
+            'latest-xboxone-apps',
+            'xboxone-gold-lounge',
+            'game-details',
+            'game-details-hex'
+        ]
+        self.endpoints_xuid = [
+            'achievements',
+            'profile',
+            'presence',
+            'gamercard',
+            'activity',
+            'friends',
+            'followers',
+            'game-clips',
+            'game-clips/saved',
+            'game-stats',
+            'screenshots',
+            'xbox360games',
+            'xboxonegames',
+            'game-status'
+        ]
 
     def get(self, method=None, term=None):
         ''' Retrieve data from supported endpoints '''

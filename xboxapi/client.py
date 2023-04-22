@@ -19,7 +19,7 @@ class Client(object):
 
         self.api_key = api_key
         self.timeout = timeout
-        self.endpoint = 'https://xboxapi.com/v2/'
+        self.endpoint = 'https://xboxapi.com/api/'
         self.timeout = timeout if timeout is not None else 3  # Seconds
         self.lang = lang
         self.last_method_call = None
@@ -43,8 +43,10 @@ class Client(object):
 
     def api_get(self, method):
         ''' GET wrapper on requests library '''
-        headers = {'X-Auth': self.api_key,
-                   'User-Agent': 'Python/XboxApi ' + xboxapi.__version__}
+        headers = {
+            'Authorization': 'Bearer ' + self.api_key,
+            'User-Agent': 'Python/XboxApi ' + xboxapi.__version__
+        }
 
         if self.lang is not None:
             headers['Accept-Language'] = self.lang
@@ -73,7 +75,7 @@ class Client(object):
     def api_post(self, method, body):
         ''' POST wrapper on requests library '''
         headers = {
-            'X-AUTH': self.api_key,
+            'Authorization': 'Bearer ' + self.api_key,
             'Content-Type': 'application/json'
         }
 
